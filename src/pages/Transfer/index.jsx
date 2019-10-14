@@ -3,7 +3,7 @@
  * @Github: https://github.com/cat-walk
  * @Date: 2019-10-14 16:45:14
  * @LastEditors: Alfred Yang
- * @LastEditTime: 2019-10-14 22:25:06
+ * @LastEditTime: 2019-10-15 00:11:56
  * @Description: file content
  */
 import React, { PureComponent } from 'react';
@@ -36,24 +36,36 @@ class Transfer extends PureComponent {
     super(props);
     this.state = {
       isModalShow: false,
-      errors: []
+      errors: [],
+      transferAmount: null,
+      recieverAddress: null,
+      memos: null
     };
 
     this.jumpToTransferResult = this.jumpToTransferResult.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
+  }
+
+  onCloseModal() {
+    this.setState({
+      isModalShow: false
+    });
   }
 
   jumpToTransferResult() {
     const { history } = this.props;
+    const { transferAmount, recieverAddress, memo } = this.state;
 
     const payload = {
-      amount: 'test account',
-      recieverAddress: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX',
-      memo: ''
+      amount: transferAmount,
+      recieverAddress,
+      memo
     };
     const res = JSON.parse(
       prompt('transfer?params=' + JSON.stringify(payload))
     );
     console.log({
+      payload,
       res
     });
 
@@ -75,13 +87,21 @@ class Transfer extends PureComponent {
       return;
     }
 
+    console.log(`I'm success`);
+
     // todo: Is there other nice way to write the params?
-    history.push(`/transfer/${JSON.stringify(res.data)}`);
+    history.push(`/transfer-result/${res.data.txId}`);
   }
 
   render() {
     const { getFieldProps } = this.props.form;
-    const { isModalShow, errors } = this.state;
+    const {
+      isModalShow,
+      errors,
+      transferAmount,
+      recieverAddress,
+      memo
+    } = this.state;
 
     return (
       <section
@@ -91,27 +111,34 @@ class Transfer extends PureComponent {
         <List className='transfer-form'>
           <InputItem
             {...getFieldProps('money3')}
-            type='number'
+            type='digit'
             labelNumber={LABEL_NUM}
             placeholder='input the transfer amount'
             clear
             moneyKeyboardAlign='left'
-            moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+            value={transferAmount}
+            onChange={transferAmount => {
+              this.setState({
+                transferAmount: +transferAmount
+              });
+            }}
           >
             Amount
           </InputItem>
           <InputItem
-            type='string'
+            type='text'
             labelNumber={LABEL_NUM}
             placeholder='input the reciever address'
             clear
-            onChange={v => {
-              console.log('onChange', v);
-            }}
             onBlur={v => {
               console.log('onBlur', v);
             }}
-            moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+            value={recieverAddress}
+            onChange={recieverAddress => {
+              this.setState({
+                recieverAddress
+              });
+            }}
           >
             Reciever Address
           </InputItem>
@@ -119,26 +146,31 @@ class Transfer extends PureComponent {
             (Only support main chain transfer) &nbsp;&nbsp;&nbsp;
           </p>
           <InputItem
-            {...getFieldProps('money2', {
-              normalize: (v, prev) => {
-                if (v && !/^(([1-9]\d*)|0)(\.\d{0,2}?)?$/.test(v)) {
-                  if (v === '.') {
-                    return '0.';
-                  }
-                  return prev;
-                }
-                return v;
-              }
-            })}
-            type='string'
+            // {...getFieldProps('money2', {
+            //   normalize: (v, prev) => {
+            //     if (v && !/^(([1-9]\d*)|0)(\.\d{0,2}?)?$/.test(v)) {
+            //       if (v === '.') {
+            //         return '0.';
+            //       }
+            //       return prev;
+            //     }
+            //     return v;
+            //   }
+            // })}
+            type='text'
+            placeholder='input the memo'
             labelNumber={LABEL_NUM}
-            placeholder='money format'
             ref={el => (this.inputRef = el)}
             onVirtualKeyboardConfirm={v =>
               console.log('onVirtualKeyboardConfirm:', v)
             }
             clear
-            moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+            value={memo}
+            onChange={memo => {
+              this.setState({
+                memo
+              });
+            }}
           >
             Memo(Optional)
           </InputItem>

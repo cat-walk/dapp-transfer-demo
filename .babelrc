@@ -1,0 +1,12 @@
+/*
+ * @Author: Alfred Yang
+ * @Github: https://github.com/cat-walk
+ * @Date: 2019-10-14 23:17:00
+ * @LastEditors: Alfred Yang
+ * @LastEditTime: 2019-10-14 23:17:11
+ * @Description: file content
+ */
+{
+  "presets": ["@babel/preset-react", "@babel/preset-env"],
+  "plugins": ["emotion"]
+}

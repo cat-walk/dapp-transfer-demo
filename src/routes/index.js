@@ -13,7 +13,7 @@ export default (
     <Route path='/login' component={Login} />
     <Route path='/personal-center/:data' component={PersonalCenter} />
     <Route path='/transfer' component={Transfer} />
-    <Route path='/transfer-result' component={TransferResult} />
+    <Route path='/transfer-result/:txId' component={TransferResult} />
     {/* <Route path='*' component={NoMatch} /> */}
   </Switch>
 );

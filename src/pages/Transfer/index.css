@@ -3,7 +3,7 @@
  * @Github: https://github.com/cat-walk
  * @Date: 2019-10-14 18:14:00
  * @LastEditors: Alfred Yang
- * @LastEditTime: 2019-10-14 18:59:29
+ * @LastEditTime: 2019-10-14 22:45:03
  * @Description: file content
  */
 .title {
@@ -18,16 +18,14 @@
   font-size: 12px !important;
 }
 
-.reciever-address-tip{
+.reciever-address-tip {
   text-align: right;
   font-size: 10px;
 }
 
 .transfer-form {
-  margin-bottom: 200px;
+  margin-bottom: 150px;
 }
-
-.
 
 .account-balance-value {
   font-size: 25px;

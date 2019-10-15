@@ -3,7 +3,7 @@
  * @Github: https://github.com/cat-walk
  * @Date: 2019-10-14 16:46:04
  * @LastEditors: Alfred Yang
- * @LastEditTime: 2019-10-15 00:27:25
+ * @LastEditTime: 2019-10-15 14:44:49
  * @Description: file content
  */
 import React, { PureComponent } from 'react';
@@ -101,7 +101,7 @@ class TransferResult extends PureComponent {
       errors: []
     };
 
-    this.jumpToPersonalCenter = this.jumpToPersonalCenter.bind(this);
+    this.jumpToLogin = this.jumpToLogin.bind(this);
     this.onCloseModal = this.onCloseModal.bind(this);
   }
 
@@ -116,7 +116,7 @@ class TransferResult extends PureComponent {
   }
 
   fetchTransactionResult() {
-    const { txId } = this.props.match.params;
+    let { txId } = this.props.match.params;
     this.setState({
       txId
     });
@@ -157,7 +157,7 @@ class TransferResult extends PureComponent {
         return;
       }
 
-      const { Status: status } = res.data;
+      const { Status: status, TransactionId } = res.data;
       const {
         From: senderAddress,
         To: recieverAddress,
@@ -172,7 +172,7 @@ class TransferResult extends PureComponent {
         recieverAddress,
         senderAddress,
         memo,
-        txId,
+        txId: TransactionId,
         blockHeight,
         status,
         loading: false
@@ -184,9 +184,9 @@ class TransferResult extends PureComponent {
     console.log({ txId });
   }
 
-  jumpToPersonalCenter() {
+  jumpToLogin() {
     const { history } = this.props;
-    history.push('/personal-center');
+    history.push('/login');
   }
 
   // todo: the modal's code is repeating
@@ -228,20 +228,8 @@ class TransferResult extends PureComponent {
               </Card.Body>
             )}
           </Card>
-          <Button type='primary' onClick={this.jumpToPersonalCenter}>
-            Back to personal center
-          </Button>
-          <Button
-            type='primary'
-            style={{ marginTop: 30 }}
-            onClick={() => {
-              const { loading } = this.state;
-              this.setState({
-                loading: !loading
-              });
-            }}
-          >
-            Spinning
+          <Button type='primary' onClick={this.jumpToLogin}>
+            Back to page Login
           </Button>
           <WhiteSpace size='lg' />
         </WingBlank>
